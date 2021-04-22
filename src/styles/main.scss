@@ -1,0 +1,5 @@
+@use './shared';
+
+body {
+  font-family: shared.$font-oswald;
+}

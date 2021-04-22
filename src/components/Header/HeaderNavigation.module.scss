@@ -1,0 +1,35 @@
+@use '../../styles/shared';
+
+.nav {
+  display: flex;
+  flex-flow: nowrap;
+  align-items: flex-end;
+}
+
+.wrapper {
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+
+  .navItem {
+    color: shared.$color-white;
+    font-size: shared.$font-small;
+    margin-left: 15px;
+
+    &.navLink {
+      text-decoration: none;
+    }
+
+    &.navBtn {
+      border: none;
+      background: none;
+      font-size: shared.$font-small;
+      font-family: shared.$font-oswald;
+      cursor: pointer;
+    }
+
+    &.selected {
+      font-weight: shared.$font-weight-bold;
+    }
+  }
+}

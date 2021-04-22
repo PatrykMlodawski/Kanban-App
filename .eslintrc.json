@@ -8,10 +8,4 @@
     "ecmaVersion": 12,
     "sourceType": "module"
   }
-  // "rules": {
-  //   "prefer-destructuring": 0,
-  //   "no-param-reassign": 0,
-  //   "guard-for-in": 0,
-  //   "no-restricted-syntax": 0
-  // }
 }
