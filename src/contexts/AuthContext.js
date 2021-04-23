@@ -35,13 +35,22 @@ export function AuthProvider({ children }) {
     return currentUser.updatePassword(password);
   }
 
+  function clean() {
+    return auth.onAuthStateChanged((user) => {
+      setCurrentUser(user);
+      setLoading(false);
+    });
+  }
+
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
       setCurrentUser(user);
       setLoading(false);
     });
 
-    return unsubscribe;
+    return () => {
+      unsubscribe();
+    };
   }, []);
 
   const value = {
@@ -52,6 +61,7 @@ export function AuthProvider({ children }) {
     resetPassword,
     updateEmail,
     updatePassword,
+    clean,
   };
 
   return <AuthContext.Provider value={value}>{!loading && children}</AuthContext.Provider>;

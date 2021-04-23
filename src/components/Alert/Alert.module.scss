@@ -1,0 +1,13 @@
+@use '../../styles/shared';
+@use 'sass:color';
+
+.alert {
+  width: 100%;
+  padding: 12px 20px;
+  font-size: shared.$font-small;
+  margin-bottom: 40px;
+  color: color.scale(shared.$color-error, $lightness: -65%);
+  background-color: shared.$color-error;
+  border: 1px solid color.scale(shared.$color-error, $lightness: -5%);
+  border-radius: 5px;
+}

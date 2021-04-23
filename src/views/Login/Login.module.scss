@@ -1,1 +1,11 @@
-@use '../styles/shared';
+@use '../../styles/shared';
+
+.link {
+  display: block;
+  width: 100%;
+  text-align: center;
+  text-decoration: none;
+  margin-top: 20px;
+  color: shared.$color-primary;
+  font-size: shared.$font-small;
+}

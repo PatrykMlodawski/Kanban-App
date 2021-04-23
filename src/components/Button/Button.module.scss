@@ -1,0 +1,19 @@
+@use '../../styles/shared';
+@use 'sass:color';
+
+.button {
+  width: 100%;
+  padding: 6px 15px;
+  font-size: shared.$font-small;
+  font-family: shared.$font-oswald;
+  cursor: pointer;
+  border: none;
+  border-radius: 5px;
+  background-color: shared.$color-primary;
+  color: shared.$color-white;
+  transition: background 0.2s;
+
+  &:hover {
+    background-color: color.scale(shared.$color-primary, $lightness: -20%);
+  }
+}

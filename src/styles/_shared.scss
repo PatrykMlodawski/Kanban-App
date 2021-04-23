@@ -2,11 +2,24 @@ $color-primary: #2f88e5;
 
 $color-white: #fff;
 
+$color-form: #7d7d7d;
+
+$color-error: #f8d7da;
+
 $font-title-small: 30px;
 $font-small: 16px;
+
+$form-title-small: 20px;
 
 $font-weight-regular: 400;
 $font-weight-bold: 700;
 
 $font-oswald: 'Oswald', sans-serif;
 $font-dancingScript: 'Dancing Script', cursive;
+
+@mixin center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}

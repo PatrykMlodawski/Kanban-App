@@ -6,6 +6,8 @@ import styles from './App.module.scss';
 import { AuthProvider } from '../../contexts/AuthContext';
 import Header from '../../components/Header/Header';
 import Login from '../Login/Login';
+import Tasks from '../Tasks/Tasks';
+import ForgotPassword from '../ForgotPassword/ForgotPassword';
 
 const App = () => {
   return (
@@ -13,7 +15,9 @@ const App = () => {
       <AuthProvider>
         <Header />
         <Switch>
+          <Route exact path="/" component={Tasks} />
           <Route path="/login" component={Login} />
+          <Route path="/forgot-password" component={ForgotPassword} />
         </Switch>
       </AuthProvider>
     </Router>

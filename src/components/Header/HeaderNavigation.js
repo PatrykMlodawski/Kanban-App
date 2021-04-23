@@ -1,13 +1,27 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styles from './HeaderNavigation.module.scss';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useHistory } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 
 const HeaderNavigation = () => {
-  const { currentUser } = useAuth();
+  const [error, setError] = useState('');
+  const { currentUser, logout } = useAuth();
+  const history = useHistory();
+
+  async function handleLogout() {
+    setError('');
+
+    try {
+      await logout();
+      history.push('/login');
+    } catch {
+      setError('Failed to log out');
+    }
+  }
 
   return (
     <nav className={styles.nav}>
+      {error && window.alert(error)}
       <ul className={styles.wrapper}>
         {currentUser ? (
           <>
@@ -31,7 +45,13 @@ const HeaderNavigation = () => {
               </NavLink>
             </li>
             <li>
-              <button className={`${styles.navBtn} ${styles.navItem}`}>Logout</button>
+              <button
+                onClick={handleLogout}
+                type="button"
+                className={`${styles.navBtn} ${styles.navItem}`}
+              >
+                Logout
+              </button>
             </li>
           </>
         ) : (

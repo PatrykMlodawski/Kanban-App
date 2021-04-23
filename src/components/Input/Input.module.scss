@@ -1,0 +1,51 @@
+@use '../../styles/shared';
+
+.formItem {
+  width: 100%;
+  margin: 28px 0;
+  position: relative;
+
+  &Bar {
+    width: 100%;
+    height: 1px;
+    background-color: shared.$color-form;
+    transition: background 0.2s;
+  }
+
+  .label {
+    color: shared.$color-form;
+    position: absolute;
+    top: 3px;
+    left: 0;
+    transition: all 0.2s ease-out;
+    font-size: shared.$font-small;
+    cursor: text;
+  }
+
+  .input {
+    color: shared.$color-form;
+    font-size: shared.$font-small;
+    border: none;
+    line-height: shared.$font-small * 1.4;
+    width: 100%;
+    background: none;
+
+    &:focus {
+      outline: none;
+
+      ~ .formItemBar {
+        background-color: shared.$color-primary;
+      }
+    }
+
+    &:focus + .label {
+      transform: translateY(-19px);
+      font-size: shared.$font-small * 0.7;
+    }
+
+    &:not(:placeholder-shown) + .label {
+      transform: translateY(-19px);
+      font-size: shared.$font-small * 0.7;
+    }
+  }
+}

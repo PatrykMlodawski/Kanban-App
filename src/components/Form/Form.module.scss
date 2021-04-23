@@ -1,0 +1,18 @@
+@use '../../styles/shared';
+
+.wrapper {
+  @include shared.center;
+
+  width: 80vw;
+  border: 1px solid rgba(0, 0, 0, 0.125);
+  border-radius: 5px;
+  padding: 25px 20px;
+  background-color: shared.$color-white;
+
+  .title {
+    text-align: center;
+    font-size: shared.$font-title-small;
+    margin-bottom: 25px;
+    font-weight: shared.$font-weight-regular;
+  }
+}
