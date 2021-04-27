@@ -1,29 +1,34 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useHistory } from 'react-router-dom';
-import styles from './Login.module.scss';
+import { useHistory } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import Form from '../../components/Form/Form';
 import Input from '../../components/Input/Input';
 import Button from '../../components/Button/Button';
 
-const Login = () => {
+const Signup = () => {
   const [email, setEmail] = useState('');
+  const [name, setName] = useState('');
   const [password, setPassword] = useState('');
+  const [passwordConfirm, setPasswordConfirm] = useState('');
   const history = useHistory();
-  const { login, clean } = useAuth();
+  const { signup, clean } = useAuth();
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
   async function handleSubmit(e) {
     e.preventDefault();
 
+    if (password !== passwordConfirm) {
+      return setError('Passwords do not match');
+    }
+
     try {
       setError('');
       setLoading(true);
-      await login(email, password);
+      await signup(email, name, password);
       history.push('/');
     } catch {
-      setError('Failed to sign in');
+      setError('Failed to sign up');
     }
 
     setLoading(false);
@@ -45,6 +50,15 @@ const Login = () => {
         Email
       </Input>
       <Input
+        handleChange={(e) => setName(e.target.value)}
+        id="username"
+        type="text"
+        value={name}
+        required
+      >
+        Username
+      </Input>
+      <Input
         handleChange={(e) => setPassword(e.target.value)}
         id="password"
         type="password"
@@ -53,14 +67,20 @@ const Login = () => {
       >
         Password
       </Input>
+      <Input
+        handleChange={(e) => setPasswordConfirm(e.target.value)}
+        id="password-confirm"
+        type="password"
+        value={passwordConfirm}
+        required
+      >
+        Password Confirmation
+      </Input>
       <Button disabled={loading} type="submit">
-        Log In
+        Sign Up
       </Button>
-      <Link className={styles.link} to="/forgot-password">
-        Forgot Password
-      </Link>
     </Form>
   );
 };
 
-export default Login;
+export default Signup;
