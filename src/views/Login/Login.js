@@ -10,7 +10,7 @@ const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const history = useHistory();
-  const { login, clean } = useAuth();
+  const { login, clean, currentUser } = useAuth();
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
@@ -30,7 +30,7 @@ const Login = () => {
   }
 
   useEffect(() => {
-    return clean();
+    return () => clean();
   });
 
   return (

@@ -4,11 +4,13 @@ import '../../styles/reset.scss';
 import '../../styles/main.scss';
 import styles from './App.module.scss';
 import { AuthProvider } from '../../contexts/AuthContext';
+import PrivateRoute from '../../components/PrivateRoute/PrivateRoute';
 import Header from '../../components/Header/Header';
 import Login from '../Login/Login';
 import Signup from '../Signup/Signup';
 import Tasks from '../Tasks/Tasks';
 import ForgotPassword from '../ForgotPassword/ForgotPassword';
+import Account from '../Account/Account';
 
 const App = () => {
   return (
@@ -16,7 +18,8 @@ const App = () => {
       <AuthProvider>
         <Header />
         <Switch>
-          <Route exact path="/" component={Tasks} />
+          <PrivateRoute exact path="/" component={Tasks} />
+          <PrivateRoute path="/account" component={Account} />
           <Route path="/login" component={Login} />
           <Route path="/signup" component={Signup} />
           <Route path="/forgot-password" component={ForgotPassword} />

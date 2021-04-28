@@ -26,6 +26,12 @@ export function AuthProvider({ children }) {
       });
   }
 
+  async function getName() {
+    const doc = await db.collection('users').doc(currentUser.uid).get();
+
+    return await doc.data().name;
+  }
+
   function login(email, password) {
     return auth.signInWithEmailAndPassword(email, password);
   }
@@ -44,6 +50,10 @@ export function AuthProvider({ children }) {
 
   function updatePassword(password) {
     return currentUser.updatePassword(password);
+  }
+
+  function updateName(name) {
+    return db.collection('users').doc(currentUser.uid).update({ name: name });
   }
 
   function clean() {
@@ -73,6 +83,8 @@ export function AuthProvider({ children }) {
     updateEmail,
     updatePassword,
     clean,
+    getName,
+    updateName,
   };
 
   return <AuthContext.Provider value={value}>{!loading && children}</AuthContext.Provider>;
