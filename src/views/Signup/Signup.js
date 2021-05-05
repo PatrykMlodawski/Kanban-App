@@ -11,7 +11,7 @@ const Signup = () => {
   const [password, setPassword] = useState('');
   const [passwordConfirm, setPasswordConfirm] = useState('');
   const history = useHistory();
-  const { signup, clean, currentUser } = useAuth();
+  const { signup, clean } = useAuth();
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 

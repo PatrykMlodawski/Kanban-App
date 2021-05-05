@@ -1,0 +1,13 @@
+.wrapper {
+  overflow-x: scroll;
+}
+
+.tasks {
+  padding: 15px;
+  margin-top: 50px;
+  width: 1000px;
+
+  display: flex;
+  flex-flow: nowrap row;
+  justify-content: space-between;
+}

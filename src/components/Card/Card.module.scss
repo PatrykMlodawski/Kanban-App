@@ -1,0 +1,73 @@
+@use '../../styles/shared';
+
+.card {
+  width: 100%;
+  background-color: #687980;
+  color: shared.$color-white;
+  font-family: shared.$font-oswald;
+  padding: 10px;
+  margin-bottom: 15px;
+  border-radius: 5px;
+  position: relative;
+
+  .deleteBtn {
+    background: none;
+    border: none;
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    width: 15px;
+    height: 15px;
+
+    &::before,
+    &::after {
+      position: absolute;
+      top: 50%;
+      left: 0;
+      transform: translateY(-50%);
+      content: '';
+      width: 100%;
+      height: 1px;
+      background-color: shared.$color-white;
+    }
+
+    &::before {
+      transform: rotate(-45deg);
+    }
+
+    &::after {
+      transform: rotate(45deg);
+    }
+  }
+
+  .title {
+    font-size: shared.$font-title-small * 0.7;
+    text-align: center;
+    margin-bottom: 10px;
+  }
+
+  .content {
+    font-size: shared.$font-small;
+    margin-bottom: 15px;
+    line-height: 1.2em;
+  }
+
+  .btns {
+    display: flex;
+    flex-flow: nowrap row;
+    justify-content: flex-end;
+
+    button {
+      background: none;
+      border: none;
+      color: shared.$color-white;
+      font-size: shared.$font-small;
+      font-family: shared.$font-oswald;
+      font-weight: shared.$font-weight-bold;
+    }
+
+    &:not(:first-child) button {
+      margin-left: 15px;
+    }
+  }
+}
