@@ -1,14 +1,14 @@
 import React from 'react';
 import styles from './Input.module.scss';
 
-const Input = ({ id, children, value, type, handleChange, ...props }) => {
+const Input = ({ tag: Tag, id, children, value, type, handleChange, ...props }) => {
   return (
     <>
       {props.info && <p className={styles.info}>{props.info}</p>}
       <div className={styles.formItem}>
-        <input
+        <Tag
           id={id}
-          className={styles.input}
+          className={Tag === 'textarea' ? styles.textarea : styles.input}
           placeholder=" "
           onChange={handleChange}
           type={type}

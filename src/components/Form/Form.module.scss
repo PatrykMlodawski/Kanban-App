@@ -15,4 +15,35 @@
     margin-bottom: 25px;
     font-weight: shared.$font-weight-regular;
   }
+
+  .closeBtn {
+    background: none;
+    border: none;
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    width: 15px;
+    height: 15px;
+    z-index: 99999;
+
+    &::before,
+    &::after {
+      position: absolute;
+      top: 50%;
+      left: 0;
+      transform: translateY(-50%);
+      content: '';
+      width: 100%;
+      height: 1px;
+      background-color: shared.$color-primary;
+    }
+
+    &::before {
+      transform: rotate(-45deg);
+    }
+
+    &::after {
+      transform: rotate(45deg);
+    }
+  }
 }

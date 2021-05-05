@@ -20,7 +20,7 @@ export function AuthProvider({ children }) {
         name,
         tasks: {
           toDo: [],
-          doing: [],
+          inProgress: [],
           done: [],
         },
       });

@@ -23,7 +23,8 @@
     transform-origin: 0%;
   }
 
-  .input {
+  .input,
+  .textarea {
     color: shared.$color-form;
     font-size: shared.$font-small;
     border: none;
@@ -48,6 +49,11 @@
       transform: translateY(-19px) scale(0.7);
       color: shared.$color-primary;
     }
+  }
+
+  .textarea {
+    resize: none;
+    min-height: 100px;
   }
 }
 
