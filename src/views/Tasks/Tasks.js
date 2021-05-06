@@ -1,12 +1,9 @@
 import React, { useState } from 'react';
 import styles from './Tasks.module.scss';
+import { useAuth } from '../../contexts/AuthContext';
 import Card from '../../components/Card/Card';
 import TaskList from '../../components/TaskList/TaskList';
 import Popup from '../../components/Popup/Popup';
-import Form from '../../components/Form/Form';
-import Input from '../../components/Input/Input';
-import Dropdown from '../../components/Dropdown/Dropdown';
-import Button from '../../components/Button/Button';
 
 const TASKS = {
   toDo: [
@@ -142,65 +139,37 @@ const PRIORITIES = [
 const Tasks = () => {
   const [tasks, setTasks] = useState(TASKS);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [title, setTitle] = useState('');
-  const [content, setContent] = useState('');
-  const [priority, setPriority] = useState('0');
-  const [color, setColor] = useState(COLORS[0].value);
   const [loading, setLoading] = useState(false);
+  const { addTask } = useAuth();
 
   const togglePopup = () => {
     setIsModalOpen(!isModalOpen);
   };
 
+  const handleSubmit = async (e, title, content, priority, color) => {
+    e.preventDefault();
+
+    setLoading(true);
+    await addTask(title, content, priority, color);
+
+    togglePopup();
+    setLoading(false);
+  };
+
   return (
     <>
       {isModalOpen && (
-        <Popup>
-          <Form closeFunc={togglePopup} title="New Task">
-            <Input
-              tag="input"
-              handleChange={(e) => setTitle(e.target.value)}
-              id="title"
-              type="text"
-              value={title}
-              required
-            >
-              Title
-            </Input>
-            <Input
-              tag="textarea"
-              handleChange={(e) => setContent(e.target.value)}
-              id="content"
-              type="text"
-              value={content}
-              required
-            >
-              Description
-            </Input>
-            <Dropdown
-              handleChange={(e) => setPriority(e.target.value)}
-              options={PRIORITIES}
-              id="priority"
-              value={priority}
-              required
-            >
-              Priority
-            </Dropdown>
-            <Dropdown
-              handleChange={(e) => setColor(e.target.value)}
-              options={COLORS}
-              id="color"
-              value={color}
-              color
-              required
-            >
-              Color
-            </Dropdown>
-            <Button disabled={loading} type="submit">
-              Add Task
-            </Button>
-          </Form>
-        </Popup>
+        <Popup
+          loading={loading}
+          handleSubmit={handleSubmit}
+          prioritiesList={PRIORITIES}
+          colorsList={COLORS}
+          closeFunc={togglePopup}
+          title=""
+          content=""
+          priority="0"
+          color={COLORS[0].value}
+        ></Popup>
       )}
       <button onClick={togglePopup} className={styles.addTaskBtn} type="button"></button>
       <div className={styles.wrapper}>

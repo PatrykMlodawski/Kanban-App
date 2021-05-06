@@ -19,9 +19,9 @@ export function AuthProvider({ children }) {
       .set({
         name,
         tasks: {
-          toDo: [],
-          inProgress: [],
-          done: [],
+          toDo: {},
+          inProgress: {},
+          done: {},
         },
       });
   }
@@ -56,6 +56,28 @@ export function AuthProvider({ children }) {
     return db.collection('users').doc(currentUser.uid).update({ name: name });
   }
 
+  function addTask(title, content, color, priority) {
+    const id = new Date().getTime().toString();
+    const data = {};
+    data[id] = {
+      title: title,
+      content: content,
+      color: color,
+      priority: priority,
+    };
+    return db
+      .collection('users')
+      .doc(currentUser.uid)
+      .set(
+        {
+          tasks: {
+            toDo: data,
+          },
+        },
+        { merge: true }
+      );
+  }
+
   function clean() {
     return auth.onAuthStateChanged((user) => {
       setCurrentUser(user);
@@ -85,6 +107,7 @@ export function AuthProvider({ children }) {
     clean,
     getName,
     updateName,
+    addTask,
   };
 
   return <AuthContext.Provider value={value}>{!loading && children}</AuthContext.Provider>;

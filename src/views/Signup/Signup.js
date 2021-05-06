@@ -41,6 +41,7 @@ const Signup = () => {
   return (
     <Form error={error} title="Sign Up" onFormSubmit={handleSubmit}>
       <Input
+        tag="input"
         handleChange={(e) => setEmail(e.target.value)}
         id="email"
         type="email"
@@ -50,6 +51,7 @@ const Signup = () => {
         Email
       </Input>
       <Input
+        tag="input"
         handleChange={(e) => setName(e.target.value)}
         id="username"
         type="text"
@@ -59,6 +61,7 @@ const Signup = () => {
         Username
       </Input>
       <Input
+        tag="input"
         handleChange={(e) => setPassword(e.target.value)}
         id="password"
         type="password"
@@ -68,6 +71,7 @@ const Signup = () => {
         Password
       </Input>
       <Input
+        tag="input"
         handleChange={(e) => setPasswordConfirm(e.target.value)}
         id="password-confirm"
         type="password"

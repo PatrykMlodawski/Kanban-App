@@ -1,8 +1,70 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styles from './Popup.module.scss';
+import Form from '../Form/Form';
+import Input from '../Input/Input';
+import Dropdown from '../Dropdown/Dropdown';
+import Button from '../Button/Button';
 
-const Popup = ({ children }) => {
-  return <div className={styles.popup}>{children}</div>;
+const Popup = (props) => {
+  const [title, setTitle] = useState(props.title);
+  const [content, setContent] = useState(props.content);
+  const [priority, setPriority] = useState(props.priority);
+  const [color, setColor] = useState(props.color);
+
+  return (
+    <div className={styles.popup}>
+      <Form
+        onFormSubmit={(e) => {
+          props.handleSubmit(e, title, content, color, priority);
+        }}
+        closeFunc={props.closeFunc}
+        title="New Task"
+      >
+        <Input
+          tag="input"
+          handleChange={(e) => setTitle(e.target.value)}
+          id="title"
+          type="text"
+          value={title}
+          required
+        >
+          Title
+        </Input>
+        <Input
+          tag="textarea"
+          handleChange={(e) => setContent(e.target.value)}
+          id="content"
+          type="text"
+          value={content}
+          required
+        >
+          Description
+        </Input>
+        <Dropdown
+          handleChange={(e) => setPriority(e.target.value)}
+          options={props.prioritiesList}
+          id="priority"
+          value={priority}
+          required
+        >
+          Priority
+        </Dropdown>
+        <Dropdown
+          handleChange={(e) => setColor(e.target.value)}
+          options={props.colorsList}
+          id="color"
+          value={color}
+          color
+          required
+        >
+          Color
+        </Dropdown>
+        <Button disabled={props.loading} type="submit">
+          Add Task
+        </Button>
+      </Form>
+    </div>
+  );
 };
 
 export default Popup;

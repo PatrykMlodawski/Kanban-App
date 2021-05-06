@@ -36,6 +36,7 @@ const Login = () => {
   return (
     <Form error={error} title="Log In" onFormSubmit={handleSubmit}>
       <Input
+        tag="input"
         handleChange={(e) => setEmail(e.target.value)}
         id="email"
         type="email"
@@ -45,6 +46,7 @@ const Login = () => {
         Email
       </Input>
       <Input
+        tag="input"
         handleChange={(e) => setPassword(e.target.value)}
         id="password"
         type="password"
