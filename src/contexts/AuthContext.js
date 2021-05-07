@@ -1,5 +1,6 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { auth, db } from '../firebase';
+import firebase from 'firebase/app';
 
 const AuthContext = React.createContext();
 
@@ -56,7 +57,7 @@ export function AuthProvider({ children }) {
     return db.collection('users').doc(currentUser.uid).update({ name: name });
   }
 
-  function addTask(title, content, color, priority) {
+  function addTask(title, content, color, priority, type) {
     const id = new Date().getTime().toString();
     const data = {};
     data[id] = {
@@ -71,7 +72,50 @@ export function AuthProvider({ children }) {
       .set(
         {
           tasks: {
-            toDo: data,
+            [type]: data,
+          },
+        },
+        { merge: true }
+      );
+  }
+
+  async function getTasks() {
+    const doc = await db.collection('users').doc(currentUser.uid).get();
+
+    return await doc.data().tasks;
+  }
+
+  function deleteTask(type, id) {
+    return db
+      .collection('users')
+      .doc(currentUser.uid)
+      .set(
+        {
+          tasks: {
+            [type]: {
+              [id]: firebase.firestore.FieldValue.delete(),
+            },
+          },
+        },
+        { merge: true }
+      );
+  }
+
+  function editTask(title, content, color, priority, type, id) {
+    return db
+      .collection('users')
+      .doc(currentUser.uid)
+      .set(
+        {
+          tasks: {
+            [type]: {
+              [id]: {
+                title,
+                content,
+                color,
+                priority,
+              },
+            },
           },
         },
         { merge: true }
@@ -108,6 +152,9 @@ export function AuthProvider({ children }) {
     getName,
     updateName,
     addTask,
+    getTasks,
+    deleteTask,
+    editTask,
   };
 
   return <AuthContext.Provider value={value}>{!loading && children}</AuthContext.Provider>;

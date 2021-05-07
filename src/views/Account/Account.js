@@ -54,6 +54,7 @@ const Account = () => {
   return (
     <Form message={message} error={error} title="Account" onFormSubmit={handleSubmit}>
       <Input
+        tag="input"
         handleChange={(e) => setEmail(e.target.value)}
         id="email"
         type="email"
@@ -63,6 +64,7 @@ const Account = () => {
         Email
       </Input>
       <Input
+        tag="input"
         handleChange={(e) => setName(e.target.value)}
         id="username"
         type="text"
@@ -72,6 +74,7 @@ const Account = () => {
         Username
       </Input>
       <Input
+        tag="input"
         handleChange={(e) => setPassword(e.target.value)}
         id="password"
         type="password"
@@ -81,6 +84,7 @@ const Account = () => {
         Password
       </Input>
       <Input
+        tag="input"
         handleChange={(e) => setPasswordConfirm(e.target.value)}
         id="password-confirm"
         type="password"

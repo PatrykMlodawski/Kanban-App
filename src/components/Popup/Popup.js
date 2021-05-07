@@ -14,11 +14,12 @@ const Popup = (props) => {
   return (
     <div className={styles.popup}>
       <Form
+        error={props.error}
         onFormSubmit={(e) => {
-          props.handleSubmit(e, title, content, color, priority);
+          props.handleSubmit(e, title, content, color, priority, props.taskType, props.taskId);
         }}
         closeFunc={props.closeFunc}
-        title="New Task"
+        title={props.edit ? 'Edit Task' : 'New Task'}
       >
         <Input
           tag="input"
@@ -36,12 +37,11 @@ const Popup = (props) => {
           id="content"
           type="text"
           value={content}
-          required
         >
           Description
         </Input>
         <Dropdown
-          handleChange={(e) => setPriority(e.target.value)}
+          handleChange={(e) => setPriority(parseInt(e.target.value))}
           options={props.prioritiesList}
           id="priority"
           value={priority}
@@ -60,7 +60,7 @@ const Popup = (props) => {
           Color
         </Dropdown>
         <Button disabled={props.loading} type="submit">
-          Add Task
+          {props.edit ? 'Accept' : 'Add Task'}
         </Button>
       </Form>
     </div>

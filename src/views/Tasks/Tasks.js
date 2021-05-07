@@ -1,102 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styles from './Tasks.module.scss';
 import { useAuth } from '../../contexts/AuthContext';
 import Card from '../../components/Card/Card';
 import TaskList from '../../components/TaskList/TaskList';
 import Popup from '../../components/Popup/Popup';
-
-const TASKS = {
-  toDo: [
-    {
-      title: 'First task',
-      content:
-        'Lorem ipsum dolor sit amet consectetur adipisicing elit. Error voluptatum natus iure qui vitae eveniet officia minima?',
-      color: 'blue',
-      priority: 1,
-    },
-    {
-      title: 'First task',
-      content:
-        'Lorem ipsum dolor sit amet consectetur adipisicing elit. Error voluptatum natus iure qui vitae eveniet officia minima?',
-      color: 'blue',
-      priority: 1,
-    },
-    {
-      title: 'First task',
-      content:
-        'Lorem ipsum dolor sit amet consectetur adipisicing elit. Error voluptatum natus iure qui vitae eveniet officia minima?',
-      color: 'gray',
-      priority: 1,
-    },
-    {
-      title: 'First task',
-      content:
-        'Lorem ipsum dolor sit amet consectetur adipisicing elit. Error voluptatum natus iure qui vitae eveniet officia minima?',
-      color: 'blue',
-      priority: 1,
-    },
-  ],
-  inProgress: [
-    {
-      title: 'First task',
-      content:
-        'Lorem ipsum dolor sit amet consectetur adipisicing elit. Error voluptatum natus iure qui vitae eveniet officia minima?',
-      color: 'blue',
-      priority: 1,
-    },
-    {
-      title: 'First task',
-      content:
-        'Lorem ipsum dolor sit amet consectetur adipisicing elit. Error voluptatum natus iure qui vitae eveniet officia minima?',
-      color: 'red',
-      priority: 1,
-    },
-    {
-      title: 'First task',
-      content:
-        'Lorem ipsum dolor sit amet consectetur adipisicing elit. Error voluptatum natus iure qui vitae eveniet officia minima?',
-      color: 'red',
-      priority: 1,
-    },
-    {
-      title: 'First task',
-      content:
-        'Lorem ipsum dolor sit amet consectetur adipisicing elit. Error voluptatum natus iure qui vitae eveniet officia minima?',
-      color: 'blue',
-      priority: 1,
-    },
-  ],
-  done: [
-    {
-      title: 'First task',
-      content:
-        'Lorem ipsum dolor sit amet consectetur adipisicing elit. Error voluptatum natus iure qui vitae eveniet officia minima?',
-      color: 'blue',
-      priority: 1,
-    },
-    {
-      title: 'First task',
-      content:
-        'Lorem ipsum dolor sit amet consectetur adipisicing elit. Error voluptatum natus iure qui vitae eveniet officia minima?',
-      color: 'green',
-      priority: 1,
-    },
-    {
-      title: 'First task',
-      content:
-        'Lorem ipsum dolor sit amet consectetur adipisicing elit. Error voluptatum natus iure qui vitae eveniet officia minima?',
-      color: 'purple',
-      priority: 1,
-    },
-    {
-      title: 'First task',
-      content:
-        'Lorem ipsum dolor sit amet consectetur adipisicing elit. Error voluptatum natus iure qui vitae eveniet officia minima?',
-      color: 'yellow',
-      priority: 1,
-    },
-  ],
-};
 
 const COLORS = [
   {
@@ -123,94 +30,181 @@ const COLORS = [
 
 const PRIORITIES = [
   {
-    value: '0',
+    value: 0,
     text: 'Low',
   },
   {
-    value: '1',
+    value: 1,
     text: 'Medium',
   },
   {
-    value: '2',
+    value: 2,
     text: 'High',
   },
 ];
 
 const Tasks = () => {
-  const [tasks, setTasks] = useState(TASKS);
+  const [tasks, setTasks] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [loading, setLoading] = useState(false);
-  const { addTask } = useAuth();
+  const [error, setError] = useState('');
+  const [choosenTask, setChoosenTask] = useState(null);
+  const { addTask, getTasks, deleteTask, editTask } = useAuth();
 
   const togglePopup = () => {
+    isModalOpen && setChoosenTask(null);
+    setError('');
     setIsModalOpen(!isModalOpen);
   };
 
-  const handleSubmit = async (e, title, content, priority, color) => {
+  const openEditPopup = (title, content, priority, color, type, id) => {
+    setChoosenTask({
+      title,
+      content,
+      priority,
+      color,
+      type,
+      id,
+    });
+    togglePopup();
+  };
+
+  const handleSubmit = async (e, title, content, priority, color, type, id) => {
     e.preventDefault();
 
-    setLoading(true);
-    await addTask(title, content, priority, color);
+    try {
+      setError('');
+      setLoading(true);
+      if (title.length > 50 || content.length > 200) throw new Error('Too many characters!');
 
-    togglePopup();
+      choosenTask
+        ? await editTask(title, content, priority, color, type, id)
+        : await addTask(title, content, priority, color, 'toDo');
+
+      const tasks = await getTasks();
+      setTasks(tasks);
+      togglePopup();
+    } catch {
+      setError('Failed to add/edit a task');
+    }
     setLoading(false);
   };
+
+  const moveTask = async (title, content, color, priority, id, from, to) => {
+    const promises = [addTask(title, content, color, priority, to), deleteTask(from, id)];
+    try {
+      setLoading(true);
+
+      await Promise.all(promises);
+      const tasks = await getTasks();
+      setLoading(false);
+      setTasks(tasks);
+    } catch {
+      console.error('Failed to move task');
+    }
+  };
+
+  const deleteTaskFunc = async (type, id) => {
+    setLoading(true);
+    await deleteTask(type, id);
+    const tasks = await getTasks();
+    setLoading(false);
+    setTasks(tasks);
+  };
+
+  function sortTasks(tasks) {
+    return Object.entries(tasks)
+      .sort((a, b) => parseInt(a[0]) - parseInt(b[0]))
+      .sort((a, b) => b[1].priority - a[1].priority);
+  }
+
+  useEffect(() => {
+    getTasks().then((tasks) => setTasks(tasks));
+  }, [getTasks]);
 
   return (
     <>
       {isModalOpen && (
         <Popup
+          edit={!!choosenTask}
+          error={error}
           loading={loading}
           handleSubmit={handleSubmit}
           prioritiesList={PRIORITIES}
           colorsList={COLORS}
           closeFunc={togglePopup}
-          title=""
-          content=""
-          priority="0"
-          color={COLORS[0].value}
+          title={choosenTask ? choosenTask.title : ''}
+          content={choosenTask ? choosenTask.content : ''}
+          priority={choosenTask ? choosenTask.priority : 0}
+          color={choosenTask ? choosenTask.color : COLORS[0].value}
+          taskType={choosenTask ? choosenTask.type : null}
+          taskId={choosenTask ? choosenTask.id : null}
         ></Popup>
       )}
       <button onClick={togglePopup} className={styles.addTaskBtn} type="button"></button>
       <div className={styles.wrapper}>
-        <div className={styles.tasks}>
-          <TaskList title="To-Do">
-            {tasks.toDo.map((task, index) => (
-              <Card
-                type="toDo"
-                title={task.title}
-                content={task.content}
-                color={task.color}
-                btnText="Start Task"
-                key={index}
-              />
-            ))}
-          </TaskList>
-          <TaskList title="In Progress">
-            {tasks.inProgress.map((task, index) => (
-              <Card
-                type="inProgress"
-                title={task.title}
-                content={task.content}
-                color={task.color}
-                btnText="Done"
-                key={index}
-              />
-            ))}
-          </TaskList>
-          <TaskList title="Done">
-            {tasks.done.map((task, index) => (
-              <Card
-                type="done"
-                title={task.title}
-                content={task.content}
-                color={task.color}
-                btnText="Undone"
-                key={index}
-              />
-            ))}
-          </TaskList>
-        </div>
+        {tasks && (
+          <div className={styles.tasks}>
+            <TaskList title="To-Do">
+              {sortTasks(tasks.toDo).map((task) => (
+                <Card
+                  isModalOpen={isModalOpen}
+                  loading={loading}
+                  deleteFunc={deleteTaskFunc}
+                  moveTaskFunc={moveTask}
+                  editPopupFunc={openEditPopup}
+                  id={task[0]}
+                  type="toDo"
+                  title={task[1].title}
+                  content={task[1].content}
+                  priority={task[1].priority}
+                  color={task[1].color}
+                  btnText="Start Task"
+                  key={task[0]}
+                />
+              ))}
+            </TaskList>
+
+            <TaskList title="In Progress">
+              {sortTasks(tasks.inProgress).map((task) => (
+                <Card
+                  isModalOpen={isModalOpen}
+                  loading={loading}
+                  deleteFunc={deleteTaskFunc}
+                  moveTaskFunc={moveTask}
+                  editPopupFunc={openEditPopup}
+                  id={task[0]}
+                  type="inProgress"
+                  title={task[1].title}
+                  content={task[1].content}
+                  priority={task[1].priority}
+                  color={task[1].color}
+                  btnText="Done"
+                  key={task[0]}
+                />
+              ))}
+            </TaskList>
+            <TaskList title="Done">
+              {sortTasks(tasks.done).map((task) => (
+                <Card
+                  isModalOpen={isModalOpen}
+                  loading={loading}
+                  deleteFunc={deleteTaskFunc}
+                  moveTaskFunc={moveTask}
+                  editPopupFunc={openEditPopup}
+                  id={task[0]}
+                  type="done"
+                  title={task[1].title}
+                  content={task[1].content}
+                  priority={task[1].priority}
+                  color={task[1].color}
+                  btnText="Undone"
+                  key={task[0]}
+                />
+              ))}
+            </TaskList>
+          </div>
+        )}
       </div>
     </>
   );
