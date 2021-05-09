@@ -22,6 +22,7 @@ const Popup = (props) => {
         title={props.edit ? 'Edit Task' : 'New Task'}
       >
         <Input
+          maxLength={100}
           tag="input"
           handleChange={(e) => setTitle(e.target.value)}
           id="title"
@@ -32,6 +33,7 @@ const Popup = (props) => {
           Title
         </Input>
         <Input
+          maxLength={200}
           tag="textarea"
           handleChange={(e) => setContent(e.target.value)}
           id="content"
