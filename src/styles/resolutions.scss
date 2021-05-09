@@ -1,0 +1,29 @@
+@mixin h-540 {
+  @media (min-height: 540px) {
+    @content;
+  }
+}
+
+@mixin w-700 {
+  @media (min-width: 700px) {
+    @content;
+  }
+}
+
+@mixin w-1000 {
+  @media (min-width: 1000px) {
+    @content;
+  }
+}
+
+@mixin w-1150 {
+  @media (min-width: 1150px) {
+    @content;
+  }
+}
+
+@mixin w-1600 {
+  @media (min-width: 1600px) {
+    @content;
+  }
+}

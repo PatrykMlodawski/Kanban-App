@@ -1,5 +1,6 @@
 @use '../../styles/shared';
 @use 'sass:color';
+@use '../../styles/resolutions.scss';
 
 .alert {
   width: 100%;
@@ -7,6 +8,14 @@
   font-size: shared.$font-small;
   margin-bottom: 40px;
   border-radius: 5px;
+
+  @include resolutions.w-700 {
+    font-size: shared.$font-medium;
+  }
+
+  @include resolutions.w-1600 {
+    font-size: shared.$font-large;
+  }
 }
 
 .error {

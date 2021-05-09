@@ -1,9 +1,14 @@
 @use '../../styles/shared';
+@use '../../styles/resolutions.scss';
 
 .popup {
   position: fixed;
-  top: 50%;
+  top: -100px;
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 9999;
+
+  @include resolutions.h-540 {
+    top: 50%;
+  }
 }

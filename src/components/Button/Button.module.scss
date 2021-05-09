@@ -1,5 +1,6 @@
 @use '../../styles/shared';
 @use 'sass:color';
+@use '../../styles/resolutions.scss';
 
 .button {
   width: 100%;
@@ -11,13 +12,24 @@
   border-radius: 5px;
   background-color: shared.$color-primary;
   color: shared.$color-white;
-  transition: background 0.2s;
 
-  // &:hover {
-  //   background-color: color.scale(shared.$color-primary, $lightness: -20%);
-  // }
+  @include resolutions.w-700 {
+    font-size: shared.$font-medium;
+    padding: 8px 20px;
+  }
+
+  @include resolutions.w-1000 {
+    transition: background 0.2s;
+    &:hover {
+      background-color: color.scale(shared.$color-primary, $lightness: -20%);
+    }
+  }
+
+  @include resolutions.w-1600 {
+    font-size: shared.$font-large;
+  }
 
   &:disabled {
-    opacity: 50%;
+    opacity: 0.5;
   }
 }

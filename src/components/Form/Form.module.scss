@@ -1,19 +1,48 @@
 @use '../../styles/shared';
+@use '../../styles//resolutions.scss';
 
 .wrapper {
-  @include shared.center;
-
+  position: absolute;
+  left: 50%;
+  top: 100px;
   width: 80vw;
   border: 1px solid rgba(0, 0, 0, 0.125);
   border-radius: 5px;
   padding: 25px 20px;
   background-color: shared.$color-white;
+  transform: translateX(-50%);
+
+  @include resolutions.h-540 {
+    @include shared.center;
+  }
+
+  @include resolutions.w-700 {
+    padding: 25px 30px;
+  }
+
+  @include resolutions.w-1000 {
+    width: 70vw;
+    padding: 25px 35px;
+  }
+
+  @include resolutions.w-1600 {
+    width: 50vw;
+    padding: 25px 50px;
+  }
 
   .title {
     text-align: center;
     font-size: shared.$font-title-small;
     margin-bottom: 25px;
     font-weight: shared.$font-weight-regular;
+
+    @include resolutions.w-700 {
+      font-size: shared.$font-title-medium;
+    }
+
+    @include resolutions.w-1600 {
+      font-size: shared.$font-title-large;
+    }
   }
 
   .closeBtn {
@@ -25,6 +54,12 @@
     width: 15px;
     height: 15px;
     z-index: 99999;
+    cursor: pointer;
+
+    @include resolutions.w-1000 {
+      width: 20px;
+      height: 20px;
+    }
 
     &::before,
     &::after {

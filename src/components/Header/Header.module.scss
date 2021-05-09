@@ -1,4 +1,5 @@
 @use '../../styles/shared';
+@use '../../styles/resolutions.scss';
 
 .header {
   padding: 10px;
@@ -13,6 +14,10 @@
   flex-flow: row nowrap;
   justify-content: space-between;
 
+  @include resolutions.w-700 {
+    padding: 15px;
+  }
+
   .logo {
     display: flex;
     flex-flow: row nowrap;
@@ -21,6 +26,14 @@
     img {
       width: 25px;
       margin-right: 5px;
+
+      @include resolutions.w-700 {
+        width: 35px;
+      }
+
+      @include resolutions.w-1600 {
+        width: 40px;
+      }
     }
 
     .title {
@@ -28,6 +41,14 @@
       font-size: shared.$font-title-small;
       font-weight: shared.$font-weight-bold;
       color: shared.$color-white;
+
+      @include resolutions.w-700 {
+        font-size: shared.$font-title-medium;
+      }
+
+      @include resolutions.w-1600 {
+        font-size: shared.$font-title-large;
+      }
     }
   }
 }

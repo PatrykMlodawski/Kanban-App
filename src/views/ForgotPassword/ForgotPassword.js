@@ -30,6 +30,7 @@ const ForgotPassword = () => {
   return (
     <Form message={message} error={error} title="Password Reset" onFormSubmit={handleSubmit}>
       <Input
+        tag="input"
         handleChange={(e) => setEmail(e.target.value)}
         id="email"
         type="email"

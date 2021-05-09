@@ -1,5 +1,6 @@
 @use '../../styles/shared';
 @use 'sass:color';
+@use '../../styles/resolutions.scss';
 
 .nav {
   display: flex;
@@ -17,7 +18,23 @@
     font-size: shared.$font-small;
     margin-left: 15px;
     line-height: 1em;
-    transition: color 0.2s;
+
+    @include resolutions.w-700 {
+      font-size: shared.$font-medium;
+      margin-left: 20px;
+    }
+
+    @include resolutions.w-1000 {
+      transition: color 0.2s;
+      &:hover:not(.selected) {
+        color: color.scale(shared.$color-white, $lightness: -20%);
+      }
+    }
+
+    @include resolutions.w-1600 {
+      font-size: 22px;
+      margin-left: 25px;
+    }
 
     &.navLink {
       display: block;
@@ -30,14 +47,18 @@
       font-size: shared.$font-small;
       font-family: shared.$font-oswald;
       cursor: pointer;
+
+      @include resolutions.w-700 {
+        font-size: shared.$font-medium;
+      }
+
+      @include resolutions.w-1600 {
+        font-size: shared.$font-large;
+      }
     }
 
     &.selected {
       font-weight: shared.$font-weight-bold;
-    }
-
-    &:hover:not(.selected) {
-      color: color.scale(shared.$color-white, $lightness: -20%);
     }
   }
 }

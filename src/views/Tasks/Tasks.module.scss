@@ -1,18 +1,35 @@
 @use '../../styles/shared';
+@use '../../styles/resolutions.scss';
 
 .wrapper {
   overflow-x: scroll;
   min-height: 100vh;
+
+  @include resolutions.w-1150 {
+    overflow-x: auto;
+  }
 }
 
 .tasks {
-  padding: 15px;
-  margin-top: 50px;
-  width: 1000px;
+  padding: 15px 15px 0;
+  margin: 50px auto 0;
+  max-width: 1000px;
+  width: 300vw;
 
   display: flex;
   flex-flow: nowrap row;
   justify-content: space-between;
+
+  @include resolutions.w-700 {
+    margin-top: 75px;
+    padding: 20px 20px 0;
+    max-width: 1150px;
+    width: 150vw;
+  }
+
+  @include resolutions.w-1600 {
+    max-width: 1350px;
+  }
 }
 
 .addTaskBtn {
@@ -24,7 +41,29 @@
   height: 40px;
   background-color: rgba(shared.$color-primary, 0.5);
   border-radius: 50%;
+  cursor: pointer;
   z-index: 99999;
+
+  @include resolutions.w-700 {
+    bottom: 15px;
+    right: 15px;
+  }
+
+  @include resolutions.w-1000 {
+    width: 50px;
+    height: 50px;
+
+    transition: all 0.2s;
+
+    &:hover {
+      background-color: rgba(shared.$color-primary, 1);
+    }
+  }
+
+  @include resolutions.w-1600 {
+    bottom: 20px;
+    right: 20px;
+  }
 
   &::before,
   &::after {
