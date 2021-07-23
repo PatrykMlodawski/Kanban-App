@@ -7,6 +7,9 @@
 </p>
 
 The application allows you to manage your tasks with kanban system. Live: https://kanbantasks.netlify.app/
+You can test the app with following passes:
+email: test12@test.com
+password: test12
 
 ### Built With
 
